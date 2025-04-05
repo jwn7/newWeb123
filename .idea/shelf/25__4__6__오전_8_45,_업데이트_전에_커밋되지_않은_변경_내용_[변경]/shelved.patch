@@ -1,0 +1,320 @@
+Index: templates/signup.html
+===================================================================
+diff --git a/templates/signup.html b/templates/signup.html
+deleted file mode 100644
+--- a/templates/signup.html	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,30 +0,0 @@
+-<!DOCTYPE html>
+-<html>
+-<head>
+-    <title>회원가입</title>
+-</head>
+-<body>
+-    <h2>회원가입</h2>
+-    {% with messages = get_flashed_messages() %}
+-      {% if messages %}
+-        <ul class="flashes">
+-        {% for message in messages %}
+-          <li>{{ message }}</li>
+-        {% endfor %}
+-        </ul>
+-      {% endif %}
+-    {% endwith %}
+-    <form method="POST">
+-        <div>
+-            <label for="username">아이디:</label>
+-            <input type="text" id="username" name="username" required>
+-        </div>
+-        <div>
+-            <label for="password">비밀번호:</label>
+-            <input type="password" id="password" name="password" required>
+-        </div>
+-        <button type="submit">가입하기</button>
+-    </form>
+-    <p>이미 계정이 있으신가요? <a href="{{ url_for('login') }}">로그인</a></p>
+-</body>
+-</html>
+\ No newline at end of file
+Index: schema.sql
+===================================================================
+diff --git a/schema.sql b/schema.sql
+deleted file mode 100644
+--- a/schema.sql	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,7 +0,0 @@
+-DROP TABLE IF EXISTS user;
+-
+-CREATE TABLE user (
+-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+-  username TEXT UNIQUE NOT NULL,
+-  password TEXT NOT NULL
+-);
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+deleted file mode 100644
+--- a/.idea/workspace.xml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,95 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ChangeListManager">
+-    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/Web123.iml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/schema.sql" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
+-    </list>
+-    <option name="SHOW_DIALOG" value="false" />
+-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-    <option name="LAST_RESOLUTION" value="IGNORE" />
+-  </component>
+-  <component name="FileTemplateManagerImpl">
+-    <option name="RECENT_TEMPLATES">
+-      <list>
+-        <option value="Python Script" />
+-        <option value="Flask Main" />
+-        <option value="HTML File" />
+-        <option value="SQL File" />
+-      </list>
+-    </option>
+-  </component>
+-  <component name="Git.Settings">
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-  </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 4
+-}]]></component>
+-  <component name="ProjectId" id="2vJRFjlxITwPDjnrI0gMtqSaXgq" />
+-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+-    <ConfirmationsSetting value="2" id="Add" />
+-  </component>
+-  <component name="ProjectViewState">
+-    <option name="hideEmptyMiddlePackages" value="true" />
+-    <option name="showLibraryContents" value="true" />
+-  </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "DefaultHtmlFileTemplate": "HTML File",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "git-widget-placeholder": "master",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
+-  }
+-}]]></component>
+-  <component name="RunManager">
+-    <configuration name="Web123" type="Python.FlaskServer">
+-      <module name="Web123" />
+-      <option name="target" value="$PROJECT_DIR$/app.py" />
+-      <option name="targetType" value="PATH" />
+-      <option name="ENV_FILES" value="" />
+-      <option name="INTERPRETER_OPTIONS" value="" />
+-      <option name="PARENT_ENVS" value="true" />
+-      <option name="SDK_HOME" value="" />
+-      <option name="WORKING_DIRECTORY" value="" />
+-      <option name="IS_MODULE_SDK" value="false" />
+-      <option name="ADD_CONTENT_ROOTS" value="true" />
+-      <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+-      <option name="launchJavascriptDebuger" value="false" />
+-      <method v="2" />
+-    </configuration>
+-  </component>
+-  <component name="SharedIndexes">
+-    <attachedChunks>
+-      <set>
+-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-PY-243.23654.177" />
+-        <option value="bundled-python-sdk-91d3a02ef49d-43b77aa2d136-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.23654.177" />
+-      </set>
+-    </attachedChunks>
+-  </component>
+-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+-  <component name="TaskManager">
+-    <task active="true" id="Default" summary="디폴트 작업">
+-      <changelist id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="" />
+-      <created>1743861088267</created>
+-      <option name="number" value="Default" />
+-      <option name="presentableId" value="Default" />
+-      <updated>1743861088267</updated>
+-      <workItem from="1743861089444" duration="147000" />
+-    </task>
+-    <servers />
+-  </component>
+-  <component name="TypeScriptGeneratedFilesManager">
+-    <option name="version" value="3" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: templates/index.html
+===================================================================
+diff --git a/templates/index.html b/templates/index.html
+deleted file mode 100644
+--- a/templates/index.html	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,16 +0,0 @@
+-<!DOCTYPE html>
+-<html>
+-<head>
+-    <title>메인 페이지</title>
+-</head>
+-<body>
+-    <h1>메인 페이지</h1>
+-    {% if user %}
+-        <p>환영합니다, {{ user['username'] }}님!</p>
+-        <p><a href="{{ url_for('logout') }}">로그아웃</a></p>
+-    {% else %}
+-        <p>아직 회원이 아니신가요? <a href="{{ url_for('signup') }}">회원가입</a></p>
+-        <p>이미 회원이시라면 <a href="{{ url_for('login') }}">로그인</a></p>
+-    {% endif %}
+-</body>
+-</html>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/profiles_settings.xml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,6 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <settings>
+-    <option name="USE_PROJECT_PROFILE" value="false" />
+-    <version value="1.0" />
+-  </settings>
+-</component>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/Web123.iml" filepath="$PROJECT_DIR$/.idea/Web123.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+deleted file mode 100644
+--- a/.idea/vcs.xml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/Web123.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/Web123.iml b/.idea/Web123.iml
+deleted file mode 100644
+--- a/.idea/Web123.iml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,21 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="PYTHON_MODULE" version="4">
+-  <component name="Flask">
+-    <option name="enabled" value="true" />
+-  </component>
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$">
+-      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+-    </content>
+-    <orderEntry type="jdk" jdkName="Python 3.10 (Web123)" jdkType="Python SDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-  <component name="TemplatesService">
+-    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
+-    <option name="TEMPLATE_FOLDERS">
+-      <list>
+-        <option value="$MODULE_DIR$/../Web123\templates" />
+-      </list>
+-    </option>
+-  </component>
+-</module>
+\ No newline at end of file
+Index: templates/login.html
+===================================================================
+diff --git a/templates/login.html b/templates/login.html
+deleted file mode 100644
+--- a/templates/login.html	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ /dev/null	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
+@@ -1,30 +0,0 @@
+-<!DOCTYPE html>
+-<html>
+-<head>
+-    <title>로그인</title>
+-</head>
+-<body>
+-    <h2>로그인</h2>
+-    {% with messages = get_flashed_messages() %}
+-      {% if messages %}
+-        <ul class="flashes">
+-        {% for message in messages %}
+-          <li>{{ message }}</li>
+-        {% endfor %}
+-        </ul>
+-      {% endif %}
+-    {% endwith %}
+-    <form method="POST">
+-        <div>
+-            <label for="username">아이디:</label>
+-            <input type="text" id="username" name="username" required>
+-        </div>
+-        <div>
+-            <label for="password">비밀번호:</label>
+-            <input type="password" id="password" name="password" required>
+-        </div>
+-        <button type="submit">로그인</button>
+-    </form>
+-    <p>아직 계정이 없으신가요? <a href="{{ url_for('signup') }}">회원가입</a></p>
+-</body>
+-</html>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Black\">\r\n    <option name=\"sdkName\" value=\"Python 3.10 (Web123)\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision f07e61df750c300b724ebc2f92d0b85a546047fe)
++++ b/.idea/misc.xml	(date 1743896726573)
+@@ -3,4 +3,5 @@
+   <component name="Black">
+     <option name="sdkName" value="Python 3.10 (Web123)" />
+   </component>
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (Web123)" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
