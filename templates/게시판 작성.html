@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>회원가입</h1>
+    </header>
+    <main>
+        <form action="/register" method="POST">
+            <label for="username">아이디:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">이메일:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">회원가입</button>
+        </form>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>로그인</h1>
+    </header>
+    <main>
+        <form action="/login" method="POST">
+            <label for="username">아이디:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">로그인</button>
+        </form>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>게시글 작성</h1>
+    </header>
+    <main>
+        <form action="/create-post" method="POST">
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="category">카테고리:</label>
+            <select id="category" name="category" required>
+                <option value="">선택해주세요</option>
+                <option value="news">뉴스</option>
+                <option value="discussion">토론</option>
+                <option value="question">질문</option>
+            </select>
+
+            <label for="content">내용:</label>
+            <textarea id="content" name="content" rows="10" required></textarea>
+
+            <button type="submit">게시글 등록</button>
+        </form>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>게시판</h1>
+        <nav>
+            <a href="/create_post.html">새 게시글 작성</a>
+            <a href="/login.html">로그인</a>
+            <a href="/register.html">회원가입</a>
+            <a href="/logout">로그아웃</a>
+        </nav>
+    </header>
+    <main>
+        <!-- 검색 폼 -->
+        <section class="search">
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="제목 및 내용 검색">
+                <button type="submit">검색</button>
+            </form>
+        </section>
+
+        <!-- 게시글 목록 -->
+        <section class="posts">
+            <!-- 예시 게시글 1 -->
+            <article class="post">
+                <h2><a href="/post/1.html">게시글 제목</a></h2>
+                <p>게시글 내용 미리보기...</p>
+                <p>카테고리: 뉴스</p>
+                <div class="post-actions">
+                    <button>추천 <span>10</span></button>
+                    <button>비추천 <span>2</span></button>
+                </div>
+            </article>
+            <!-- 게시글이 반복해서 표시됨 -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 게시판</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세보기</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>게시글 상세보기</h1>
+        <nav>
+            <a href="/index.html">목록으로</a>
+            <!-- 로그인 상태일 때 편집/삭제 버튼 추가 가능 -->
+        </nav>
+    </header>
+    <main>
+        <!-- 게시글 내용 -->
+        <article class="post-detail">
+            <h2>게시글 제목</h2>
+            <p>작성자: 홍길동 | 작성일: 2025-04-06</p>
+            <p>게시글 전체 내용이 여기에 들어갑니다...</p>
+            <div class="post-actions">
+                <button>추천 <span>10</span></button>
+                <button>비추천 <span>2</span></button>
+            </div>
+        </article>
+
+        <!-- 댓글 영역 -->
+        <section class="comments">
+            <h3>댓글</h3>
+            <!-- 댓글 작성 폼 -->
+            <form action="/post/1/comment" method="POST">
+                <textarea name="comment" rows="3" placeholder="댓글 작성..."></textarea>
+                <button type="submit">댓글 등록</button>
+            </form>
+
+            <!-- 댓글 리스트 -->
+            <div class="comment-list">
+                <!-- 댓글 예시 -->
+                <div class="comment">
+                    <p><strong>작성자1</strong> - 댓글 내용이 표시됩니다.</p>
+                    <div class="comment-actions">
+                        <!-- 작성자 본인일 경우만 수정/삭제 버튼 표시 -->
+                        <a href="/edit-comment/1">수정</a>
+                        <a href="/delete-comment/1">삭제</a>
+                        <a href="/reply-comment/1">답글</a>
+                    </div>
+                    <!-- 대댓글(답글) 예시 -->
+                    <div class="reply">
+                        <p><strong>작성자2</strong> - 대댓글 내용입니다.</p>
+                        <div class="comment-actions">
+                            <a href="/edit-comment/2">수정</a>
+                            <a href="/delete-comment/2">삭제</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 다른 댓글들이 반복됨 -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 게시판</p>
+    </footer>
+</body>
+</html>
+
