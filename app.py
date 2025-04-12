@@ -40,7 +40,7 @@ def create():
 
         return redirect(url_for("index"))
 
-    return render_template("create.html")
+    return render_template("create_post.html")
 
 # 게시글 수정
 @app.route("/edit/<int:id>", methods=["GET", "POST"])

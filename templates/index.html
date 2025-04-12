@@ -1,16 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>메인 페이지</title>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>메인 페이지</h1>
-    {% if user %}
-        <p>환영합니다, {{ user['username'] }}님!</p>
-        <p><a href="{{ url_for('auth.logout') }}">로그아웃</a></p>
-    {% else %}
-        <p>아직 회원이 아니신가요? <a href="{{ url_for('auth.signup') }}">회원가입</a></p>
-        <p>이미 회원이시라면 <a href="{{ url_for('auth.login') }}">로그인</a></p>
-    {% endif %}
+    <header>
+        <h1>게시판</h1>
+        <nav>
+            <a href="/create">새 게시글 작성</a>
+            <a href="/auth/login">로그인</a>
+            <a href="/auth/signup">회원가입</a>
+            <a href="/auth/logout">로그아웃</a>
+        </nav>
+    </header>
+    <main>
+        <section class="search">
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="제목 및 내용 검색">
+                <button type="submit">검색</button>
+            </form>
+        </section>
+
+        <section class="posts">
+            {% for post in posts %}
+            <article class="post">
+                <h2><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
+                <p>{{ post.content[:100] }}...</p>
+                <p>작성자: {{ post.author }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d') }}</p>
+                <div class="post-actions">
+                    </div>
+            </article>
+            {% endfor %}
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 게시판</p>
+    </footer>
 </body>
 </html>
