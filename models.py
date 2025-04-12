@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -16,7 +17,7 @@ class BulletinBoard(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     author = db.Column(db.String(50), nullable=False)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    date_created = db.Column(db.DateTime, default=func.current_timestamp())
     comments = db.relationship('Comment', backref='post', lazy=True)
 
 # 댓글 모델 정의
@@ -25,6 +26,7 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('bulletin_board.id'), nullable=False)  # 게시글 ID
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)  # 대댓글의 부모 ID
+    date_created = db.Column(db.DateTime, default=func.current_timestamp())  # 댓글 작성 시간 추가
 
     # 대댓글 관계 설정
     replies = db.relationship(
