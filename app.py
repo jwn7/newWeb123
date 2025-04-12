@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
-from models import db, Comment, BulletinBoard  # db, Comment, BulletinBoard 모델 가져오기
-from auth import bp as auth_bp  # auth.py에서 블루프린트 가져오기
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from models import db, Comment, BulletinBoard, User  # User 모델 추가
+from auth import bp as auth_bp, get_user  # auth 블루프린트와 get_user 함수 가져오기
 
 app = Flask(__name__)
 
@@ -24,15 +24,21 @@ app.register_blueprint(auth_bp)  # auth 블루프린트 등록
 @app.route("/")
 def index():
     posts = BulletinBoard.query.order_by(BulletinBoard.date_created.desc()).all()
-    return render_template("index.html", posts=posts)
+    user = get_user()  # 현재 로그인한 사용자 정보 가져오기
+    return render_template("index.html", posts=posts, user=user)
 
 # 게시글 작성
 @app.route("/create", methods=["GET", "POST"])
 def create():
+    user = get_user()
+    if not user:
+        flash("로그인 후 게시글을 작성할 수 있습니다.")
+        return redirect(url_for("auth.login"))
+
     if request.method == "POST":
         title = request.form["title"]
         content = request.form["content"]
-        author = request.form["author"]
+        author = user.username  # 현재 로그인한 사용자의 이름으로 설정
 
         new_post = BulletinBoard(title=title, content=content, author=author)
         db.session.add(new_post)
@@ -45,22 +51,38 @@ def create():
 # 게시글 수정
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit_post(id):
-    post = BulletinBoard.query.get(id)
+    user = get_user()
+    post = BulletinBoard.query.get_or_404(id)
+
+    if not user or post.author != user.username:
+        flash("게시글 수정 권한이 없습니다.")
+        return redirect(url_for("view_post", post_id=id))
 
     if request.method == "POST":
         post.title = request.form["title"]
         post.content = request.form["content"]
         db.session.commit()
 
-        return redirect(url_for("index"))
+        return redirect(url_for("view_post", post_id=id))
 
     return render_template("edit.html", post=post)
 
 # 게시글 삭제
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete_post(id):
-    post = BulletinBoard.query.get(id)
+    user = get_user()
+    post = BulletinBoard.query.get_or_404(id)
+
+    if not user or post.author != user.username:
+        flash("게시글 삭제 권한이 없습니다.")
+        return redirect(url_for("view_post", post_id=id))
+
     if post:
+        if post.file_path:
+            try:
+                os.remove(os.path.join(app.config['UPLOADED_FILES_DEST'], post.file_path))
+            except FileNotFoundError:
+                pass  # 파일이 이미 없는 경우 무시
         db.session.delete(post)
         db.session.commit()
 
@@ -71,11 +93,17 @@ def delete_post(id):
 def view_post(post_id):
     post = BulletinBoard.query.get_or_404(post_id)
     comments = Comment.query.filter_by(post_id=post_id, parent_id=None).all()
-    return render_template("post.html", post=post, comments=comments)
+    user = get_user()
+    return render_template("post.html", post=post, comments=comments, user=user)
 
 # 댓글 또는 대댓글 작성
 @app.route("/comment", methods=["POST"])
 def add_comment():
+    user = get_user()
+    if not user:
+        flash("로그인 후 댓글을 작성할 수 있습니다.")
+        return redirect(request.referrer)  # 이전 페이지로 리다이렉트
+
     content = request.form['content']
     post_id = request.form['post_id']
     parent_id = request.form.get('parent_id')
@@ -83,6 +111,7 @@ def add_comment():
     comment = Comment(
         content=content,
         post_id=int(post_id),
+        author=user.username,  # 댓글 작성자 설정
         parent_id=int(parent_id) if parent_id else None
     )
     db.session.add(comment)
@@ -92,7 +121,13 @@ def add_comment():
 # 댓글 수정
 @app.route("/edit_comment/<int:comment_id>", methods=["POST"])
 def edit_comment(comment_id):
-    comment = Comment.query.get(comment_id)
+    user = get_user()
+    comment = Comment.query.get_or_404(comment_id)
+
+    if not user or comment.author != user.username:
+        flash("댓글 수정 권한이 없습니다.")
+        return redirect(url_for('view_post', post_id=comment.post_id))
+
     if comment:
         comment.content = request.form["content"]
         db.session.commit()
@@ -101,7 +136,13 @@ def edit_comment(comment_id):
 # 댓글 삭제
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment(comment_id):
-    comment = Comment.query.get(comment_id)
+    user = get_user()
+    comment = Comment.query.get_or_404(comment_id)
+
+    if not user or comment.author != user.username:
+        flash("댓글 삭제 권한이 없습니다.")
+        return redirect(url_for('view_post', post_id=comment.post_id))
+
     if comment:
         if comment.replies:
             comment.content = "삭제된 댓글입니다."
