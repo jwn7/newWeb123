@@ -1,23 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Comment
-from flask_sqlalchemy import SQLAlchemy
+from models import db, Comment, BulletinBoard  # db, Comment, BulletinBoard 모델 가져오기
+from auth import bp as auth_bp  # auth.py에서 블루프린트 가져오기
+
 app = Flask(__name__)
 
 # 데이터베이스 설정
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bulletin_board.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+app.secret_key = 'your_secret_key'  # 세션에 사용될 비밀 키 설정
 
-# 게시판 모델 정의
-class BulletinBoard(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String(50), nullable=False)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+# DB 초기화
+db.init_app(app)
 
+# 데이터베이스 테이블 생성
 with app.app_context():
-    db.create_all()
+    db.create_all()  # 이 줄을 추가하여 테이블을 생성합니다.
+
+
+# 블루프린트 등록
+app.register_blueprint(auth_bp)  # auth 블루프린트 등록
 
 # 게시글 목록 조회
 @app.route("/")
