@@ -1,0 +1,265 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-between; /* 헤더 내부 요소 양쪽 정렬 */
+    align-items: center;
+    padding: 1em 20px; /* 좌우 패딩 추가 */
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+nav a, nav span {
+    color: white;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    background-color: #555;
+    border: none;
+    cursor: pointer;
+}
+
+nav a:hover {
+    background-color: #777;
+}
+
+nav span {
+    background-color: transparent;
+    padding: 0.5em 0; /* span에는 좌우 패딩 제거 */
+    cursor: default; /* span에는 기본 커서 */
+}
+
+nav a:last-child {
+    margin-left: 1em; /* 마지막 링크에 왼쪽 마진 추가하여 간격 벌림 */
+}
+
+main {
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 80%;
+    max-width: 960px;
+}
+
+.search {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.search form {
+    display: flex;
+    gap: 0.5em;
+}
+
+.search input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.search button[type="submit"] {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.search button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.posts {
+    margin-top: 1em;
+}
+
+.post {
+    padding: 15px;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    margin-bottom: 1em;
+    background-color: #f9f9f9;
+}
+
+.post h2 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.post h2 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.post h2 a:hover {
+    color: #007bff;
+}
+
+.post p {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 0.5em;
+}
+
+.post-actions {
+    margin-top: 1em;
+    font-size: 0.8em;
+    color: #777;
+}
+
+.post-actions button {
+    padding: 0.5em 1em;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 0.5em;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.post-actions button:hover {
+    background-color: #e0e0e0;
+}
+
+.comments {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.comments h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: #333;
+}
+
+.comments form {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.comments form textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    resize: vertical;
+}
+
+.comments form button {
+    padding: 0.8em 1.2em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.comments form button:hover {
+    background-color: #0056b3;
+}
+
+.comment-list {
+    margin-top: 1em;
+}
+
+.comment {
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    margin-bottom: 0.5em;
+    background-color: #f9f9f9;
+}
+
+.comment strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.comment small {
+    color: #777;
+    font-size: 0.8em;
+    margin-left: 0.5em;
+}
+
+.comment-actions {
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    color: #777;
+}
+
+.comment-actions button, .comment-actions a, .comment-actions form button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.8em;
+    padding: 0;
+    margin-right: 0.5em;
+}
+
+.comment-actions button:hover, .comment-actions a:hover, .comment-actions form button:hover {
+    text-decoration: underline;
+}
+
+.replies {
+    margin-left: 20px;
+    margin-top: 0.5em;
+}
+
+#reply-form- {
+    margin-top: 0.5em;
+    padding-left: 10px;
+    border-left: 2px solid #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 1em 0;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.current-file {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.current-file a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.current-file a:hover {
+    text-decoration: underline;
+}

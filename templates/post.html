@@ -20,13 +20,16 @@
     </header>
     <main>
         <article class="post-detail">
-            <p>작성자: {{ post.author }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p>작성자: {{ post.author if post.author else '알 수 없음' }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</p>
             <div class="post-content">
                 {{ post.content | replace('\n', '<br>') | safe }}
+                {% if post.file_path %}
+                    <p><a href="{{ url_for('uploaded_file', filename=post.file_path) }}" target="_blank">첨부파일</a></p>
+                {% endif %}
             </div>
             <div class="post-actions">
-                <button>추천 <span>0</span></button>
-                <button>비추천 <span>0</span></button>
+                <button id="likeButton">추천 <span id="likeCount">0</span></button>
+                <button id="dislikeButton">비추천 <span id="dislikeCount">0</span></button>
             </div>
         </article>
 
@@ -42,7 +45,7 @@
                 {% if comments %}
                     {% for comment in comments %}
                         <div class="comment">
-                            <p><strong>{{ comment.author if comment.author else '익명' }}</strong> - {{ comment.content }}
+                            <p><strong>{{ comment.author if comment.author else '알 수 없음' }}</strong> - {{ comment.content }}
                                 <small>({{ comment.date_created.strftime('%Y-%m-%d %H:%M:%S') }})</small>
                             </p>
                             <div class="comment-actions">
@@ -68,7 +71,7 @@
                                 <div class="replies" style="margin-left: 20px;">
                                     {% for reply in comment.replies.all() %}
                                         <div class="comment">
-                                            <p><strong>{{ reply.author if reply.author else '익명' }}</strong> - {{ reply.content }}
+                                            <p><strong>{{ reply.author if reply.author else '알 수 없음' }}</strong> - {{ reply.content }}
                                                 <small>({{ reply.date_created.strftime('%Y-%m-%d %H:%M:%S') }})</small>
                                             </p>
                                             <div class="comment-actions">
@@ -96,10 +99,32 @@
     </footer>
 
     <script>
-        function showReplyForm(commentId) {
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButton = document.getElementById('likeButton');
+            const dislikeButton = document.getElementById('dislikeButton');
+            const likeCountSpan = document.getElementById('likeCount');
+            const dislikeCountSpan = document.getElementById('dislikeCount');
+
+            let likeCount = parseInt(likeCountSpan.textContent);
+            let dislikeCount = parseInt(dislikeCountSpan.textContent);
+
+            likeButton.addEventListener('click', function() {
+                likeCount++;
+                likeCountSpan.textContent = likeCount;
+                // (선택 사항) 서버에 추천 정보 전송하는 AJAX 요청 추가
+            });
+
+            dislikeButton.addEventListener('click', function() {
+                dislikeCount++;
+                dislikeCountSpan.textContent = dislikeCount;
+                // (선택 사항) 서버에 비추천 정보 전송하는 AJAX 요청 추가
+            });
+
+            function showReplyForm(commentId) {
+                const replyForm = document.getElementById(`reply-form-${commentId}`);
+                replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+            }
+        });
     </script>
 </body>
 </html>
