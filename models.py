@@ -1,7 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
-
-db = SQLAlchemy()
+from extensions import db  # extensions.py에서 db 인스턴스 임포트
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +17,7 @@ class BulletinBoard(db.Model):
     content = db.Column(db.Text, nullable=False)
     author = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, default=func.current_timestamp())
-    comments = db.relationship('Comment', backref='post', lazy=True, cascade='all, delete-orphan') # cascade 옵션 추가
+    comments = db.relationship('Comment', backref='post', lazy=True, cascade='all, delete-orphan')
     file_path = db.Column(db.String(200))  # 파일 경로를 저장할 컬럼 추가
 
 # 댓글 모델 정의

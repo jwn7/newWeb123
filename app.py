@@ -1,22 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from models import db, Comment, BulletinBoard, User  # User 모델 추가
-from auth import bp as auth_bp, get_user  # auth 블루프린트와 get_user 함수 가져오기
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
+from extensions import db  # extensions.py에서 db 인스턴스 임포트
+from models import Comment, BulletinBoard, User
+from auth import bp as auth_bp, get_user
+import os
 
 app = Flask(__name__)
 
 # 데이터베이스 설정
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bulletin_board.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = 'your_secret_key'  # 세션에 사용될 비밀 키 설정
+app.secret_key = 'your_secret_key'
+app.config['UPLOADED_FILES_DEST'] = 'uploads'
 
-# DB 초기화
+# DB 초기화 (app과 연결)
 db.init_app(app)
 
-# 데이터베이스 테이블 생성
-with app.app_context():
-    db.create_all()  # 이 줄을 추가하여 테이블을 생성합니다.
 
-
+# 데이터베이스 테이블 생성 (애플리케이션 컨텍스트 내에서)
+def init_db():
+    with app.app_context():
+        db.create_all()
 # 블루프린트 등록
 app.register_blueprint(auth_bp)  # auth 블루프린트 등록
 
@@ -150,7 +153,13 @@ def delete_comment(comment_id):
             db.session.delete(comment)
         db.session.commit()
     return redirect(url_for('view_post', post_id=comment.post_id))
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)
 
-# 앱 실행
+
+# 앱 실행 시 데이터베이스 초기화 (한 번만 수행하도록 권장)
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
