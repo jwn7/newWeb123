@@ -122,7 +122,7 @@ def add_comment():
     return redirect(url_for('view_post', post_id=post_id))
 
 # 댓글 수정
-@app.route("/edit_comment/<int:comment_id>", methods=["POST"])
+@app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])
 def edit_comment(comment_id):
     user = get_user()
     comment = Comment.query.get_or_404(comment_id)
@@ -131,12 +131,14 @@ def edit_comment(comment_id):
         flash("댓글 수정 권한이 없습니다.")
         return redirect(url_for('view_post', post_id=comment.post_id))
 
-    if comment:
+    if request.method == "POST":
         comment.content = request.form["content"]
         db.session.commit()
+        return redirect(url_for('view_post', post_id=comment.post_id))
+
     return redirect(url_for('view_post', post_id=comment.post_id))
 
-# 댓글 삭제
+#댓글 삭제
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment(comment_id):
     user = get_user()
@@ -147,12 +149,14 @@ def delete_comment(comment_id):
         return redirect(url_for('view_post', post_id=comment.post_id))
 
     if comment:
-        if comment.replies:
+        if comment.replies:  # 대댓글이 있으면 내용만 표시
             comment.content = "삭제된 댓글입니다."
         else:
             db.session.delete(comment)
         db.session.commit()
+
     return redirect(url_for('view_post', post_id=comment.post_id))
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)

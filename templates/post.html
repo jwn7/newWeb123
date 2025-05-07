@@ -51,13 +51,23 @@
                             <div class="comment-actions">
                                 {% if session['user_id'] %}
                                 <button onclick="showReplyForm({{ comment.id }})">답글</button>
-                                <a href="{{ url_for('edit_comment', comment_id=comment.id) }}">수정</a>
+                                <button onclick="showEditForm({{ comment.id }})">수정</button>
                                 <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
                                 </form>
                                 {% endif %}
                             </div>
 
+                            <!-- 수정 폼 -->
+                            <div id="edit-form-{{ comment.id }}" style="display:none; margin-left: 20px;">
+                                <form action="{{ url_for('edit_comment', comment_id=comment.id) }}" method="POST">
+                                    <textarea name="content" rows="2" required>{{ comment.content }}</textarea>
+                                    <button type="submit">수정 완료</button>
+                                    <button type="button" onclick="hideEditForm({{ comment.id }})">취소</button>
+                                </form>
+                            </div>
+
+                            <!-- 답글 폼 -->
                             <div id="reply-form-{{ comment.id }}" style="display:none; margin-left: 20px;">
                                 <form action="{{ url_for('add_comment') }}" method="POST">
                                     <input type="hidden" name="post_id" value="{{ post.id }}">
@@ -76,11 +86,20 @@
                                             </p>
                                             <div class="comment-actions">
                                                 {% if session['user_id'] %}
-                                                <a href="{{ url_for('edit_comment', comment_id=reply.id) }}">수정</a>
+                                                <button onclick="showEditForm({{ reply.id }})">수정</button>
                                                 <form action="{{ url_for('delete_comment', comment_id=reply.id) }}" method="POST" style="display:inline;">
                                                     <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
                                                 </form>
                                                 {% endif %}
+                                            </div>
+
+                                            <!-- 대댓글 수정 폼 -->
+                                            <div id="edit-form-{{ reply.id }}" style="display:none; margin-left: 20px;">
+                                                <form action="{{ url_for('edit_comment', comment_id=reply.id) }}" method="POST">
+                                                    <textarea name="content" rows="2" required>{{ reply.content }}</textarea>
+                                                    <button type="submit">수정 완료</button>
+                                                    <button type="button" onclick="hideEditForm({{ reply.id }})">취소</button>
+                                                </form>
                                             </div>
                                         </div>
                                     {% endfor %}
@@ -99,6 +118,21 @@
     </footer>
 
     <script>
+        function showReplyForm(commentId) {
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showEditForm(commentId) {
+            const form = document.getElementById(`edit-form-${commentId}`);
+            form.style.display = 'block';
+        }
+
+        function hideEditForm(commentId) {
+            const form = document.getElementById(`edit-form-${commentId}`);
+            form.style.display = 'none';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const likeButton = document.getElementById('likeButton');
             const dislikeButton = document.getElementById('dislikeButton');
@@ -111,19 +145,12 @@
             likeButton.addEventListener('click', function() {
                 likeCount++;
                 likeCountSpan.textContent = likeCount;
-                // (선택 사항) 서버에 추천 정보 전송하는 AJAX 요청 추가
             });
 
             dislikeButton.addEventListener('click', function() {
                 dislikeCount++;
                 dislikeCountSpan.textContent = dislikeCount;
-                // (선택 사항) 서버에 비추천 정보 전송하는 AJAX 요청 추가
             });
-
-            function showReplyForm(commentId) {
-                const replyForm = document.getElementById(`reply-form-${commentId}`);
-                replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-            }
         });
     </script>
 </body>
