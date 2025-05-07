@@ -167,3 +167,8 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+#파일 업로드 이미지 iframe 처리
+@app.route("/download/<filename>")
+def download_image(filename):
+    return render_template("download.html", filename=filename)

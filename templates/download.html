@@ -1,0 +1,12 @@
+#iframe 이미지용
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>첨부파일 미리보기</title>
+</head>
+<body style="margin:0;">
+    <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="첨부 이미지" style="max-width: 100%; height: auto;">
+</body>
+</html>

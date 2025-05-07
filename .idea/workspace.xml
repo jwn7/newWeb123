@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="마스터로 병합">
-      <change beforePath="$PROJECT_DIR$/.idea/Web123.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Web123.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/25__4__30___4_48__________.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/25__4__30__오후_4_48,_병합_전에_커밋되지_않은_변경_내용_[변경]/shelved.patch" beforeDir="false" />
+    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="댓글기능 수정(답글, 수정 동작)">
+      <change afterPath="$PROJECT_DIR$/templates/download.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/instance/bulletin_board.db" beforeDir="false" afterPath="$PROJECT_DIR$/instance/bulletin_board.db" afterDir="false" />
@@ -155,7 +151,7 @@
       <workItem from="1746057702974" duration="33000" />
       <workItem from="1746069671814" duration="634000" />
       <workItem from="1746635903632" duration="1238000" />
-      <workItem from="1746637158886" duration="949000" />
+      <workItem from="1746637158886" duration="1956000" />
     </task>
     <task id="LOCAL-00001" summary="마스터로 병합">
       <option name="closed" value="true" />
@@ -165,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745999321465</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="댓글기능 수정(답글, 수정 동작)">
+      <option name="closed" value="true" />
+      <created>1746638262649</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746638262649</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,10 +188,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="마스터로 병합" />
-    <option name="LAST_COMMIT_MESSAGE" value="마스터로 병합" />
+    <MESSAGE value="댓글기능 수정(답글, 수정 동작)" />
+    <option name="LAST_COMMIT_MESSAGE" value="댓글기능 수정(답글, 수정 동작)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web123$app.coverage" NAME="app Coverage Results" MODIFIED="1746638026862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Web123$app.coverage" NAME="app Coverage Results" MODIFIED="1746638727618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Web123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1745999327872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
