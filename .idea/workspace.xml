@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="마스터로 병합">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +111,7 @@
       <workItem from="1743861089444" duration="147000" />
       <workItem from="1746057702974" duration="33000" />
       <workItem from="1746069671814" duration="634000" />
+      <workItem from="1746701375827" duration="401000" />
     </task>
     <task id="LOCAL-00001" summary="마스터로 병합">
       <option name="closed" value="true" />
