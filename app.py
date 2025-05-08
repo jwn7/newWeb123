@@ -1,35 +1,70 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
-from extensions import db  # extensions.py에서 db 인스턴스 임포트
-from models import Comment, BulletinBoard, User
-from auth import bp as auth_bp, get_user
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, g
+import sqlite3
+from datetime import datetime
 import os
+
 app = Flask(__name__)
 
 # 데이터베이스 설정
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bulletin_board.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+DATABASE = "bulletin_board.db"
 app.secret_key = 'your_secret_key'
 app.config['UPLOADED_FILES_DEST'] = 'uploads'
 
-# DB 초기화 (app과 연결)
-db.init_app(app)
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
+    return db
 
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
-# 데이터베이스 테이블 생성 (애플리케이션 컨텍스트 내에서)
+def query_db(query, args=(), one=False):
+    with app.app_context():
+        cur = get_db().execute(query, args)
+        rv = cur.fetchall()
+        cur.close()
+        return (rv[0] if rv else None) if one else rv
+
+def execute_db(query, args=()):
+    with app.app_context():
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute(query, args)
+        conn.commit()
+        cur.close()
+
 def init_db():
     with app.app_context():
-        db.create_all()
-# 블루프린트 등록
-app.register_blueprint(auth_bp)  # auth 블루프린트 등록
+        db = get_db()
+        with app.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
 
-# 게시글 목록 조회
+@app.cli.command('initdb')
+def initdb_command():
+    """데이터베이스를 초기화합니다."""
+    init_db()
+    print('데이터베이스가 초기화되었습니다.')
+
+from auth import bp as auth_bp, get_user
+app.register_blueprint(auth_bp)
+
 @app.route("/")
 def index():
-    posts = BulletinBoard.query.order_by(BulletinBoard.date_created.desc()).all()
-    user = get_user()  # 현재 로그인한 사용자 정보 가져오기
-    return render_template("index.html", posts=posts, user=user)
+    posts = query_db("SELECT id, title, content, author, date_created FROM bulletin_board ORDER BY date_created DESC")
+    user = get_user()
+    new_posts = []
+    for post in posts:
+        post_dict = dict(post)  # sqlite3.Row 객체를 딕셔너리로 변환
+        post_dict['date_created'] = datetime.strptime(post_dict['date_created'], '%Y-%m-%d %H:%M:%S') if post_dict['date_created'] else None
+        new_posts.append(post_dict)
+    return render_template("index.html", posts=new_posts, user=user)
 
-# 게시글 작성
 @app.route("/create", methods=["GET", "POST"])
 def create():
     user = get_user()
@@ -40,134 +75,119 @@ def create():
     if request.method == "POST":
         title = request.form["title"]
         content = request.form["content"]
-        author = user.username  # 현재 로그인한 사용자의 이름으로 설정
+        author = user['username']
 
-        new_post = BulletinBoard(title=title, content=content, author=author)
-        db.session.add(new_post)
-        db.session.commit()
-
+        query = f"INSERT INTO bulletin_board (title, content, author) VALUES ('{title}', '{content}', '{author}')"
+        execute_db(query)
         return redirect(url_for("index"))
 
     return render_template("create_post.html")
 
-# 게시글 수정
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit_post(id):
     user = get_user()
-    post = BulletinBoard.query.get_or_404(id)
+    post = query_db("SELECT id, title, content, author FROM bulletin_board WHERE id = ?", (id,), one=True)
 
-    if not user or post.author != user.username:
+    if not user or post['author'] != user['username']:
         flash("게시글 수정 권한이 없습니다.")
         return redirect(url_for("view_post", post_id=id))
 
     if request.method == "POST":
-        post.title = request.form["title"]
-        post.content = request.form["content"]
-        db.session.commit()
-
+        title = request.form["title"]
+        content = request.form["content"]
+        query = f"UPDATE bulletin_board SET title='{title}', content='{content}' WHERE id={id}"
+        execute_db(query)
         return redirect(url_for("view_post", post_id=id))
 
     return render_template("edit.html", post=post)
 
-# 게시글 삭제
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete_post(id):
     user = get_user()
-    post = BulletinBoard.query.get_or_404(id)
+    post = query_db("SELECT id, author, file_path FROM bulletin_board WHERE id = ?", (id,), one=True)
 
-    if not user or post.author != user.username:
+    if not user or post['author'] != user['username']:
         flash("게시글 삭제 권한이 없습니다.")
         return redirect(url_for("view_post", post_id=id))
 
     if post:
-        if post.file_path:
+        if post['file_path']:
             try:
-                os.remove(os.path.join(app.config['UPLOADED_FILES_DEST'], post.file_path))
+                os.remove(os.path.join(app.config['UPLOADED_FILES_DEST'], post['file_path']))
             except FileNotFoundError:
-                pass  # 파일이 이미 없는 경우 무시
-        db.session.delete(post)
-        db.session.commit()
+                pass
+        execute_db(f"DELETE FROM bulletin_board WHERE id={id}")
 
     return redirect(url_for("index"))
 
-# 게시글 상세 보기 및 댓글 표시
 @app.route("/post/<int:post_id>")
 def view_post(post_id):
-    post = BulletinBoard.query.get_or_404(post_id)
-    comments = Comment.query.filter_by(post_id=post_id, parent_id=None).all()
+    post = query_db("SELECT id, title, content, author, date_created FROM bulletin_board WHERE id = ?", (post_id,), one=True)
+    comments = query_db("SELECT id, content, author, date_created, parent_id FROM comment WHERE post_id = ? AND parent_id IS NULL", (post_id,))
     user = get_user()
     return render_template("post.html", post=post, comments=comments, user=user)
 
-# 댓글 또는 대댓글 작성
 @app.route("/comment", methods=["POST"])
 def add_comment():
     user = get_user()
     if not user:
         flash("로그인 후 댓글을 작성할 수 있습니다.")
-        return redirect(request.referrer)  # 이전 페이지로 리다이렉트
+        return redirect(request.referrer)
 
     content = request.form['content']
     post_id = request.form['post_id']
     parent_id = request.form.get('parent_id')
 
-    comment = Comment(
-        content=content,
-        post_id=int(post_id),
-        author=user.username,  # 댓글 작성자 설정
-        parent_id=int(parent_id) if parent_id else None
-    )
-    db.session.add(comment)
-    db.session.commit()
+    if parent_id:
+        query = f"INSERT INTO comment (content, post_id, author, parent_id) VALUES ('{content}', {post_id}, '{user['username']}', {parent_id})"
+    else:
+        query = f"INSERT INTO comment (content, post_id, author) VALUES ('{content}', {post_id}, '{user['username']}')"
+    execute_db(query)
     return redirect(url_for('view_post', post_id=post_id))
 
-# 댓글 수정
 @app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])
 def edit_comment(comment_id):
     user = get_user()
-    comment = Comment.query.get_or_404(comment_id)
+    comment = query_db("SELECT id, content, author, post_id FROM comment WHERE id = ?", (comment_id,), one=True)
 
-    if not user or comment.author != user.username:
+    if not user or comment['author'] != user['username']:
         flash("댓글 수정 권한이 없습니다.")
-        return redirect(url_for('view_post', post_id=comment.post_id))
+        return redirect(url_for('view_post', post_id=comment['post_id']))
 
     if request.method == "POST":
-        comment.content = request.form["content"]
-        db.session.commit()
-        return redirect(url_for('view_post', post_id=comment.post_id))
+        content = request.form["content"]
+        query = f"UPDATE comment SET content='{content}' WHERE id={comment_id}"
+        execute_db(query)
+        return redirect(url_for('view_post', post_id=comment['post_id']))
 
-    return redirect(url_for('view_post', post_id=comment.post_id))
+    return redirect(url_for('view_post', post_id=comment['post_id']))
 
-#댓글 삭제
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment(comment_id):
     user = get_user()
-    comment = Comment.query.get_or_404(comment_id)
+    comment = query_db("SELECT id, author, post_id FROM comment WHERE id = ?", (comment_id,), one=True)
+    replies = query_db("SELECT id FROM comment WHERE parent_id = ?", (comment_id,))
 
-    if not user or comment.author != user.username:
+    if not user or comment['author'] != user['username']:
         flash("댓글 삭제 권한이 없습니다.")
-        return redirect(url_for('view_post', post_id=comment.post_id))
+        return redirect(url_for('view_post', post_id=comment['post_id']))
 
     if comment:
-        if comment.replies:  # 대댓글이 있으면 내용만 표시
-            comment.content = "삭제된 댓글입니다."
+        if replies:
+            execute_db(f"UPDATE comment SET content='삭제된 댓글입니다.' WHERE id={comment_id}")
         else:
-            db.session.delete(comment)
-        db.session.commit()
+            execute_db(f"DELETE FROM comment WHERE id={comment_id}")
 
-    return redirect(url_for('view_post', post_id=comment.post_id))
+    return redirect(url_for('view_post', post_id=comment['post_id']))
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)
 
-
-# 앱 실행 시 데이터베이스 초기화 (한 번만 수행하도록 권장)
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
-
-#파일 업로드 이미지 iframe 처리
 @app.route("/download/<filename>")
 def download_image(filename):
     return render_template("download.html", filename=filename)
+
+if __name__ == "__main__":
+    from flask import g
+    app.run(debug=True)

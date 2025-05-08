@@ -11,24 +11,24 @@
         <form method="POST" enctype="multipart/form-data">
             <div>
                 <label for="title">제목:</label>
-                <input type="text" id="title" name="title" value="{{ post.title }}" required>
+                <input type="text" id="title" name="title" value="{{ post['title'] }}" required>
             </div>
             <div>
                 <label for="content">내용:</label>
-                <textarea id="content" name="content" rows="5" required>{{ post.content }}</textarea>
+                <textarea id="content" name="content" rows="5" required>{{ post['content'] }}</textarea>
             </div>
             <div>
                 <label for="file">파일 업로드 (선택 사항):</label>
                 <input type="file" id="file" name="file">
-                {% if post.file_path %}
-                    <p class="current-file">현재 파일: <a href="{{ url_for('uploaded_file', filename=post.file_path) }}">{{ post.file_path }}</a>
+                {% if post['file_path'] %}
+                    <p class="current-file">현재 파일: <a href="{{ url_for('uploaded_file', filename=post['file_path']) }}">{{ post['file_path'] }}</a>
                        <label><input type="checkbox" name="delete_file"> 삭제</label>
                     </p>
                 {% endif %}
             </div>
             <button type="submit">수정</button>
         </form>
-        <p><a href="{{ url_for('view_post', post_id=post.id) }}">돌아가기</a></p>
+        <p><a href="{{ url_for('view_post', post_id=post['id']) }}">돌아가기</a></p>
     </div>
 </body>
 </html>

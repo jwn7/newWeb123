@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>{{ post.title }} - 게시글 상세보기</title>
+    <title>{{ post['title'] }} - 게시글 상세보기</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
-        <h1>{{ post.title }}</h1>
+        <h1>{{ post['title'] }}</h1>
         <nav>
             <a href="{{ url_for('index') }}">목록으로</a>
-            {% if session['user_id'] %}
-            <a href="{{ url_for('edit_post', id=post.id) }}">수정</a>
-            <form action="{{ url_for('delete_post', id=post.id) }}" method="POST" style="display:inline;">
+            {% if session['user_id'] == post['author'] %}
+            <a href="{{ url_for('edit_post', id=post['id']) }}">수정</a>
+            <form action="{{ url_for('delete_post', id=post['id']) }}" method="POST" style="display:inline;">
                 <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
             </form>
             {% endif %}
@@ -20,13 +20,13 @@
     </header>
     <main>
         <article class="post-detail">
-            <p>작성자: {{ post.author if post.author else '알 수 없음' }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p>작성자: {{ post['author'] if post['author'] else '알 수 없음' }} | 작성일: {{ post['date_created'] }}</p>
             <div class="post-content">
-                {{ post.content | replace('\n', '<br>') | safe }}
-                {% if post.file_path %}
+                {{ post['content'] | replace('\n', '<br>') | safe }}
+                {% if post['file_path'] %}
                     <div class="attached-file">
                         <p>첨부파일:</p>
-                        <iframe src="{{ url_for('download_image', filename=post.file_path) }}" width="100%" height="400px" style="border:1px solid #ccc;"></iframe>
+                        <iframe src="{{ url_for('download_image', filename=post['file_path']) }}" width="100%" height="400px" style="border:1px solid #ccc;"></iframe>
                     </div>
                 {% endif %}
 
@@ -40,7 +40,7 @@
         <section class="comments">
             <h3>댓글</h3>
             <form action="{{ url_for('add_comment') }}" method="POST">
-                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <input type="hidden" name="post_id" value="{{ post['id'] }}">
                 <textarea name="content" rows="3" placeholder="댓글을 작성해주세요." required></textarea>
                 <button type="submit">댓글 등록</button>
             </form>
@@ -49,57 +49,57 @@
                 {% if comments %}
                     {% for comment in comments %}
                         <div class="comment">
-                            <p><strong>{{ comment.author if comment.author else '알 수 없음' }}</strong> - {{ comment.content }}
-                                <small>({{ comment.date_created.strftime('%Y-%m-%d %H:%M:%S') }})</small>
+                            <p><strong>{{ comment['author'] if comment['author'] else '알 수 없음' }}</strong> - {{ comment['content'] }}
+                                <small>({{ comment['date_created'] }})</small>
                             </p>
                             <div class="comment-actions">
-                                {% if session['user_id'] %}
-                                <button onclick="showReplyForm({{ comment.id }})">답글</button>
-                                <button onclick="showEditForm({{ comment.id }})">수정</button>
-                                <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" style="display:inline;">
+                                {% if session['user_id'] == comment['author'] %}
+                                <button onclick="showReplyForm({{ comment['id'] }})">답글</button>
+                                <button onclick="showEditForm({{ comment['id'] }})">수정</button>
+                                <form action="{{ url_for('delete_comment', comment_id=comment['id']) }}" method="POST" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
                                 </form>
                                 {% endif %}
                             </div>
 
-                            <div id="edit-form-{{ comment.id }}" style="display:none; margin-left: 20px;">
-                                <form action="{{ url_for('edit_comment', comment_id=comment.id) }}" method="POST">
-                                    <textarea name="content" rows="2" required>{{ comment.content }}</textarea>
+                            <div id="edit-form-{{ comment['id'] }}" style="display:none; margin-left: 20px;">
+                                <form action="{{ url_for('edit_comment', comment_id=comment['id']) }}" method="POST">
+                                    <textarea name="content" rows="2" required>{{ comment['content'] }}</textarea>
                                     <button type="submit">수정 완료</button>
-                                    <button type="button" onclick="hideEditForm({{ comment.id }})">취소</button>
+                                    <button type="button" onclick="hideEditForm({{ comment['id'] }})">취소</button>
                                 </form>
                             </div>
 
-                            <div id="reply-form-{{ comment.id }}" style="display:none; margin-left: 20px;">
+                            <div id="reply-form-{{ comment['id'] }}" style="display:none; margin-left: 20px;">
                                 <form action="{{ url_for('add_comment') }}" method="POST">
-                                    <input type="hidden" name="post_id" value="{{ post.id }}">
-                                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                    <input type="hidden" name="post_id" value="{{ post['id'] }}">
+                                    <input type="hidden" name="parent_id" value="{{ comment['id'] }}">
                                     <textarea name="content" rows="2" placeholder="답글을 작성해주세요." required></textarea>
                                     <button type="submit">답글 등록</button>
                                 </form>
                             </div>
 
-                            {% if comment.replies.all() %}
+                            {% if comment['replies'] %}
                                 <div class="replies" style="margin-left: 20px;">
-                                    {% for reply in comment.replies.all() %}
+                                    {% for reply in comment['replies'] %}
                                         <div class="comment">
-                                            <p><strong>{{ reply.author if reply.author else '알 수 없음' }}</strong> - {{ reply.content }}
-                                                <small>({{ reply.date_created.strftime('%Y-%m-%d %H:%M:%S') }})</small>
+                                            <p><strong>{{ reply['author'] if reply['author'] else '알 수 없음' }}</strong> - {{ reply['content'] }}
+                                                <small>({{ reply['date_created'] }})</small>
                                             </p>
                                             <div class="comment-actions">
-                                                {% if session['user_id'] %}
-                                                <button onclick="showEditForm({{ reply.id }})">수정</button>
-                                                <form action="{{ url_for('delete_comment', comment_id=reply.id) }}" method="POST" style="display:inline;">
+                                                {% if session['user_id'] == reply['author'] %}
+                                                <button onclick="showEditForm({{ reply['id'] }})">수정</button>
+                                                <form action="{{ url_for('delete_comment', comment_id=reply['id']) }}" method="POST" style="display:inline;">
                                                     <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
                                                 </form>
                                                 {% endif %}
                                             </div>
 
-                                            <div id="edit-form-{{ reply.id }}" style="display:none; margin-left: 20px;">
-                                                <form action="{{ url_for('edit_comment', comment_id=reply.id) }}" method="POST">
-                                                    <textarea name="content" rows="2" required>{{ reply.content }}</textarea>
+                                            <div id="edit-form-{{ reply['id'] }}" style="display:none; margin-left: 20px;">
+                                                <form action="{{ url_for('edit_comment', comment_id=reply['id']) }}" method="POST">
+                                                    <textarea name="content" rows="2" required>{{ reply['content'] }}</textarea>
                                                     <button type="submit">수정 완료</button>
-                                                    <button type="button" onclick="hideEditForm({{ reply.id }})">취소</button>
+                                                    <button type="button" onclick="hideEditForm({{ reply['id'] }})">취소</button>
                                                 </form>
                                             </div>
                                         </div>
