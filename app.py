@@ -3,7 +3,6 @@ from extensions import db  # extensions.py에서 db 인스턴스 임포트
 from models import Comment, BulletinBoard, User
 from auth import bp as auth_bp, get_user
 import os
-1
 app = Flask(__name__)
 
 # 데이터베이스 설정
