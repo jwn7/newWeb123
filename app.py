@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, g
+from flask import Flask, render_template, request, redirect, url_for, session, flash, g,send_from_directory, current_app, Response
+from werkzeug.utils import secure_filename
 import sqlite3
+from auth import bp as auth_bp, get_user
 from datetime import datetime
 import os
 
@@ -51,7 +53,7 @@ def initdb_command():
     init_db()
     print('데이터베이스가 초기화되었습니다.')
 
-from auth import bp as auth_bp, get_user
+
 app.register_blueprint(auth_bp)
 
 @app.route("/")
@@ -76,8 +78,15 @@ def create():
         title = request.form["title"]
         content = request.form["content"]
         author = user['username']
+        file = request.files.get('file')
+        file_path = None
 
-        query = f"INSERT INTO bulletin_board (title, content, author) VALUES ('{title}', '{content}', '{author}')"
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], filename))
+            file_path = filename
+
+        query = f"INSERT INTO bulletin_board (title, content, author, file_path) VALUES ('{title}', '{content}', '{author}', '{file_path}')"
         execute_db(query)
         return redirect(url_for("index"))
 
@@ -122,7 +131,7 @@ def delete_post(id):
 
 @app.route("/post/<int:post_id>")
 def view_post(post_id):
-    post = query_db("SELECT id, title, content, author, date_created FROM bulletin_board WHERE id = ?", (post_id,), one=True)
+    post = query_db("SELECT id, title, content, author, date_created, file_path FROM bulletin_board WHERE id = ?", (post_id,), one=True)
     comments = query_db("SELECT id, content, author, date_created, parent_id FROM comment WHERE post_id = ? AND parent_id IS NULL", (post_id,))
     user = get_user()
     return render_template("post.html", post=post, comments=comments, user=user)
@@ -182,7 +191,11 @@ def delete_comment(comment_id):
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)
+    path = os.path.join(current_app.config['UPLOADED_FILES_DEST'], filename)
+    with open(path, 'rb') as f:
+        image_data = f.read()
+    response = Response(image_data, mimetype='image/jpeg') # 또는 'image/png' 등 실제 이미지 타입에 맞게 설정
+    return response
 
 @app.route("/download/<filename>")
 def download_image(filename):
