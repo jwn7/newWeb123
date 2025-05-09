@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>게시글 작성</title>
@@ -10,23 +10,20 @@
         <h1>게시글 작성</h1>
     </header>
     <main>
-        <form action="/create" method="POST" enctype="multipart/form-data"> <!-- 🔥 중요 -->
-            <label for="title">제목:</label>
-            <input type="text" id="title" name="title" required>
+        <form action="/create" method="POST" enctype="multipart/form-data"> <label for="title">제목:</label>
+            <input type="text" id="title" name="title" required value="{{ request.form['title'] | safe if request.form['title'] }}">
             <br>
 
             <label for="content">내용:</label>
             <br>
-            <textarea id="content" name="content" rows="10" required></textarea>
+            <textarea id="content" name="content" rows="10" required>{{ request.form['content'] | safe if request.form['content'] }}</textarea>
             <br>
 
-            <!-- 로그인한 유저 기준이면 필요 없음 -->
             <label for="author">작성자:</label>
-            <input type="text" id="author" name="author" required>
+            <input type="text" id="author" name="author" required value="{{ request.form['author'] | safe if request.form['author'] }}">
             <br>
 
-            <label for="file">파일 첨부:</label>  <!-- 🔥 파일 업로드 추가 -->
-            <input type="file" id="file" name="file">
+            <label for="file">파일 첨부:</label>  <input type="file" id="file" name="file">
             <br>
 
             <button type="submit">게시글 등록</button>

@@ -11,7 +11,7 @@
         <nav>
             <a href="{{ url_for('create') }}">새 게시글 작성</a>
             {% if session['user_id'] %}
-                <span>{{ session['user_id'] }}님</span> <a href="{{ url_for('auth.logout') }}">로그아웃</a>
+                <span>{{ session['user_id'] | safe }}님</span> <a href="{{ url_for('auth.logout') }}">로그아웃</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">로그인</a>
                 <a href="{{ url_for('auth.signup') }}">회원가입</a>
@@ -29,9 +29,9 @@
         <section class="posts">
             {% for post in posts %}
             <article class="post">
-                <h2><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
-                <p>{{ post.content[:100] }}...</p>
-                <p>작성자: {{ post.author if post.author else '알 수 없음' }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d') }}</p>
+                <h2><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title | safe }}</a></h2>
+                <p>{{ post.content[:100] | safe }}...</p>
+                <p>작성자: {{ post.author if post.author else '알 수 없음' | safe }} | 작성일: {{ post.date_created.strftime('%Y-%m-%d') | safe }}</p>
                 <div class="post-actions">
                     </div>
             </article>

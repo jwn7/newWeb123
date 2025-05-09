@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="쿼리문으로 수정">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bulletin_board.db" beforeDir="false" afterPath="$PROJECT_DIR$/bulletin_board.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/download.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/download.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/post.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post.html" afterDir="false" />
-    </list>
+    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="파일 이미지업로드 출력" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,7 +119,7 @@
       <workItem from="1746701375827" duration="748000" />
       <workItem from="1746707768941" duration="1924000" />
       <workItem from="1746833468156" duration="11000" />
-      <workItem from="1746833612521" duration="933000" />
+      <workItem from="1746833612521" duration="1301000" />
     </task>
     <task id="LOCAL-00001" summary="마스터로 병합">
       <option name="closed" value="true" />
@@ -167,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746709638583</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="파일 이미지업로드 출력">
+      <option name="closed" value="true" />
+      <created>1746834807790</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746834807790</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,10 +191,11 @@
     <MESSAGE value="12" />
     <MESSAGE value="t" />
     <MESSAGE value="쿼리문으로 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="쿼리문으로 수정" />
+    <MESSAGE value="파일 이미지업로드 출력" />
+    <option name="LAST_COMMIT_MESSAGE" value="파일 이미지업로드 출력" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/newWeb123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1746834413581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/newWeb123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1746834741835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/newWeb123$Flask__app_py_.coverage" NAME="Flask (app.py) 커버리지 결과" MODIFIED="1746708454128" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1745999327872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
