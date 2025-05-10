@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="수정중">
+    <list default="true" id="fd82bbfc-7aa0-47f5-988b-4afdd9425434" name="변경" comment="12321312">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bulletin_board.db" beforeDir="false" afterPath="$PROJECT_DIR$/bulletin_board.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +123,7 @@
       <workItem from="1746707768941" duration="1924000" />
       <workItem from="1746833468156" duration="11000" />
       <workItem from="1746833612521" duration="2837000" />
-      <workItem from="1746837835006" duration="619000" />
+      <workItem from="1746837835006" duration="1557000" />
     </task>
     <task id="LOCAL-00001" summary="마스터로 병합">
       <option name="closed" value="true" />
@@ -199,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746836122957</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="12321312">
+      <option name="closed" value="true" />
+      <created>1746838475843</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746838475843</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,10 +230,11 @@
     <MESSAGE value="파일 이미지업로드 출력" />
     <MESSAGE value="safe" />
     <MESSAGE value="수정중" />
-    <option name="LAST_COMMIT_MESSAGE" value="수정중" />
+    <MESSAGE value="12321312" />
+    <option name="LAST_COMMIT_MESSAGE" value="12321312" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/newWeb123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1746838149410" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/newWeb123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1746839228599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/newWeb123$Flask__app_py_.coverage" NAME="Flask (app.py) 커버리지 결과" MODIFIED="1746708454128" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web123$Web123.coverage" NAME="Web123 커버리지 결과" MODIFIED="1745999327872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
