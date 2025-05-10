@@ -58,15 +58,42 @@ app.register_blueprint(auth_bp)
 
 @app.route("/")
 def index():
-    posts = query_db("SELECT id, title, content, author, date_created FROM bulletin_board ORDER BY date_created DESC")
+    query = request.args.get('query')
+
+    if query:
+        posts = query_db("SELECT id, title, content, author, date_created FROM bulletin_board WHERE title LIKE ? OR content LIKE ? ORDER BY date_created DESC",
+                         ('%' + query + '%', '%' + query + '%'))
+        search_query = query
+    else:
+        posts = query_db("SELECT id, title, content, author, date_created FROM bulletin_board ORDER BY date_created DESC")
+        search_query = None
+
     user = get_user()
     new_posts = []
     for post in posts:
-        post_dict = dict(post)  # sqlite3.Row 객체를 딕셔너리로 변환
+        post_dict = dict(post)
+        # date_created가 None이 아니면 datetime 객체로 변환
         post_dict['date_created'] = datetime.strptime(post_dict['date_created'], '%Y-%m-%d %H:%M:%S') if post_dict['date_created'] else None
         new_posts.append(post_dict)
-    return render_template("index.html", posts=new_posts, user=user)
+    return render_template("index.html", posts=new_posts, user=user, search_query=search_query)
+@app.route('/search')
+def search():
+    query = request.args.get('query')
 
+    if not query:
+        flash('검색어를 입력해주세요.')
+        return redirect(url_for('index'))
+
+    posts = query_db("SELECT id, title, content, author, date_created FROM bulletin_board WHERE title LIKE ? OR content LIKE ? ORDER BY date_created DESC",
+                     ('%' + query + '%', '%' + query + '%'))
+
+    new_posts = []
+    for post in posts:
+        post_dict = dict(post)
+        post_dict['date_created'] = datetime.strptime(post_dict['date_created'], '%Y-%m-%d %H:%M:%S') if post_dict['date_created'] else None
+        new_posts.append(post_dict)
+
+    return render_template('index.html', posts=new_posts, search_query=query)
 @app.route("/create", methods=["GET", "POST"])
 def create():
     user = get_user()
@@ -203,6 +230,13 @@ def uploaded_file(filename):
 def download_image(filename):
     return render_template("download.html", filename=filename)
 
+@app.route('/post/<int:id>')
+def view(id):
+    post = query_db("SELECT * FROM posts WHERE id = ?", (id,), one=True)
+    if post:
+        return render_template('view.html', post=post)
+    return '게시글 없음'
+    return render_template('index.html', posts=posts, search_query=query)
 if __name__ == "__main__":
     from flask import g
     app.run(debug=True)
