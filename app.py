@@ -112,7 +112,7 @@ def create():
             filename = secure_filename(file.filename)
             print(f"File object filename: {file.filename}")
             print(f"File object content_type: {file.content_type}")
-            file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], file.filename))
+            file.save(os.path.join(os.path.dirname(os.path.abspath(__file__)),app.config['UPLOADED_FILES_DEST'], file.filename))
             file_path = file.filename
 
         query = f"INSERT INTO bulletin_board (title, content, author, file_path) VALUES ('{title}', '{content}', '{author}', '{file_path}')"
@@ -220,7 +220,8 @@ def delete_comment(comment_id):
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    path = os.path.join(app.config['UPLOADED_FILES_DEST'], filename)
+
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),app.config['UPLOADED_FILES_DEST'], filename)
     with open(path, 'rb') as f:
         image_data = f.read()
     response = Response(image_data, mimetype='image/jpeg') # 또는 'image/png' 등 실제 이미지 타입에 맞게 설정
