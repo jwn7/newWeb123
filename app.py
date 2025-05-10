@@ -220,7 +220,7 @@ def delete_comment(comment_id):
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    path = os.path.join(current_app.config['UPLOADED_FILES_DEST'], filename)
+    path = os.path.join(app.config['UPLOADED_FILES_DEST'], filename)
     with open(path, 'rb') as f:
         image_data = f.read()
     response = Response(image_data, mimetype='image/jpeg') # 또는 'image/png' 등 실제 이미지 타입에 맞게 설정

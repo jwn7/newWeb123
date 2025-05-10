@@ -120,7 +120,7 @@
       <workItem from="1746707768941" duration="1924000" />
       <workItem from="1746833468156" duration="11000" />
       <workItem from="1746833612521" duration="2837000" />
-      <workItem from="1746837835006" duration="2349000" />
+      <workItem from="1746837835006" duration="2677000" />
     </task>
     <task id="LOCAL-00001" summary="마스터로 병합">
       <option name="closed" value="true" />
@@ -210,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746839578550</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="12321312">
+      <option name="closed" value="true" />
+      <created>1746840472242</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1746840472242</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
