@@ -112,10 +112,8 @@ def create():
             filename = secure_filename(file.filename)
             print(f"File object filename: {file.filename}")
             print(f"File object content_type: {file.content_type}")
-            if not os.path.exists(os.path.join(app.config['UPLOADED_FILES_DEST'], filename)):
-                os.makedirs(os.path.join(app.config['UPLOADED_FILES_DEST'], filename))
-            file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], filename))
-            file_path = filename
+            file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], file.filename))
+            file_path = file.filename
 
         query = f"INSERT INTO bulletin_board (title, content, author, file_path) VALUES ('{title}', '{content}', '{author}', '{file_path}')"
         execute_db(query)
