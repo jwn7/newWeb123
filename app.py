@@ -80,9 +80,11 @@ def create():
         author = user['username']
         file = request.files.get('file')
         file_path = None
-
+        print(f"request.files: {request.files}")  # 로그 추가
         if file:
             filename = secure_filename(file.filename)
+            print(f"File object filename: {file.filename}")
+            print(f"File object content_type: {file.content_type}")
             file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], filename))
             file_path = filename
 
